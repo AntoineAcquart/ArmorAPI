@@ -1,0 +1,29 @@
+{
+    "name" : "nomArmure",
+    "composition": [ {
+            "type":"casque",
+            "name":"nomCasque",
+            "value":"100"
+        },
+        {
+            "type":"bras",
+            "name":"nomBras",
+            "value":"100"
+        },
+        {
+            "type":"torse",
+            "name":"nomTorse",
+            "value":"100"
+        },
+        {
+            "type":"jambe",
+            "name":"nomJambe",
+            "value":"100"
+        },
+        {
+            "type":"cape",
+            "name":"nomCape",
+            "value":"100"
+        },
+    ]
+}
