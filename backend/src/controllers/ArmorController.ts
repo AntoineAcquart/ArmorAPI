@@ -10,6 +10,15 @@ class ArmorController {
     const armorRepository = getRepository(Armor);
     const armors = await armorRepository.find();
 
+    const itemRepository = getRepository(Item);
+
+    for (let index = 0; index < armors.length; index++) {
+      const items = await itemRepository.find({
+        where: { armor: armors[index] }
+      });
+      armors[index].composition = items;
+    }
+
     //Send the armors object
     res.send(armors);
   };
@@ -24,6 +33,14 @@ class ArmorController {
       const armor = await armorRepository.findOneOrFail({
         where: { name: name }
       });
+
+      const itemRepository = getRepository(Item);
+
+      const items = await itemRepository.find({
+        where: { armor: armor }
+      });
+      armor.composition = items;
+
       res.status(200).send(armor);
     } catch (error) {
       res.status(404).send("Armor not found");

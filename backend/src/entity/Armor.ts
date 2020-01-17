@@ -1,11 +1,4 @@
-import {
-  Entity,
-  Column,
-  Unique,
-  ManyToMany,
-  JoinTable,
-  PrimaryColumn
-} from "typeorm";
+import { Entity, Unique, PrimaryColumn, OneToMany } from "typeorm";
 import { Item } from "./Item";
 
 @Entity()
@@ -14,7 +7,9 @@ export class Armor {
   @PrimaryColumn()
   name: string;
 
-  @ManyToMany(type => Item)
-  @JoinTable()
+  @OneToMany(
+    type => Item,
+    item => item.armor
+  )
   composition: Item[];
 }
