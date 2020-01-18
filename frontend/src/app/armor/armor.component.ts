@@ -2,8 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { ArmorService } from "./armor.service";
 import { ItemService } from "../item/item.service";
 import { Armor } from "./armor.entity";
-import {  FormBuilder,  FormGroup,  Validators,  FormControl} from "@angular/forms";
-import { Item } from '../item/item.entity';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from "@angular/forms";
+import { Item } from "../item/item.entity";
 @Component({
   selector: "app-armor",
   templateUrl: "./armor.component.html",
@@ -11,14 +16,14 @@ import { Item } from '../item/item.entity';
 })
 export class ArmorComponent implements OnInit {
   Armors: Armor[] = [];
-  PartsArmor : string[] = ["helmet","arm","torso","leg","cape"];
-  Helmets : Item[] = [];
-  Arms : Item[] = [];
-  Torsos : Item[] = [];
-  Legs : Item[] = [];
-  Capes : Item[] = [];
+  PartsArmor: string[] = ["helmet", "arm", "torso", "leg", "cape"];
+  Helmets: Item[] = [];
+  Arms: Item[] = [];
+  Torsos: Item[] = [];
+  Legs: Item[] = [];
+  Capes: Item[] = [];
 
-  CompositionArmor : Item[]=[];
+  CompositionArmor: Item[] = [];
   addArmorGroup = new FormGroup({
     name: new FormControl("", [
       Validators.required,
@@ -35,37 +40,51 @@ export class ArmorComponent implements OnInit {
 
   editArmorControl: FormControl[] = [];
 
-  constructor(private armorService: ArmorService, private itemService : ItemService) {}
+  constructor(
+    private armorService: ArmorService,
+    private itemService: ItemService
+  ) {}
 
   ngOnInit() {
     this.armorService.getArmors().subscribe({
       next: response => {
         this.Armors = response;
-        this.Armors.forEach(armor => {
-          
-        });
+        this.Armors.forEach(armor => {});
       },
 
       error: err => console.error("error : ", err)
     });
 
-
     this.PartsArmor.forEach(part => {
       this.itemService.getItems(part).subscribe({
         next: response => {
-          switch(part){
-            case 'helmet': {this.Helmets = response;break;}
-            case 'arm': {this.Arms = response;break;}
-            case 'torso':{ this.Torsos = response; break;}
-            case 'leg': {this.Legs = response;break;}
-            case 'cape': {this.Capes = response;break;}
+          switch (part) {
+            case "helmet": {
+              this.Helmets = response;
+              break;
+            }
+            case "arm": {
+              this.Arms = response;
+              break;
+            }
+            case "torso": {
+              this.Torsos = response;
+              break;
+            }
+            case "leg": {
+              this.Legs = response;
+              break;
+            }
+            case "cape": {
+              this.Capes = response;
+              break;
+            }
           }
         }
-      })
-
+      });
     });
   }
-  
+
   toggleAddArmorForm() {
     this.addArmorForm = !this.addArmorForm;
     delete this.addArmorFormError;
@@ -75,14 +94,14 @@ export class ArmorComponent implements OnInit {
     });
   }
 
-  
-  partToAdd : Item ;
+  partToAdd: Item;
   addArmor() {
     delete this.addArmorFormError;
     if (this.addArmorGroup.invalid) {
       return;
     }
-    this.PartsArmor.forEach(part => {//pas eu le temps de terminer
+    this.PartsArmor.forEach(part => {
+      //pas eu le temps de terminer
       // switch(part){
       //   case 'helmet': { this.partToAdd = this.Helmets.find<Item>(item => this.addArmorGroup.get(part).value);break;}
       //   case 'arm': {this.Arms = ;break;}
@@ -92,7 +111,7 @@ export class ArmorComponent implements OnInit {
       // }
       this.CompositionArmor.push();
     });
-    
+
     const armor: Armor = {
       name: this.addArmorGroup.get("name").value,
       composition: this.CompositionArmor

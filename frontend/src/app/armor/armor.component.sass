@@ -15,11 +15,12 @@ main
 
         #head
             width: 100%
-            height: 80px
+            min-height: 80px
             display: flex
             justify-content: flex-start
             align-items: center
             flex-direction: row
+            flex-wrap: wrap
 
             > *
                 margin: 0 20px
@@ -33,10 +34,11 @@ main
                 align-items: center
                 flex-direction: row
                 flex-wrap: nowrap
+                margin: 0
                 > *
                     margin: 0 15px
                 *
-                    max-width: 80px
+                    max-width: 120px
 
                 .name
                     max-width: 200px
@@ -51,7 +53,7 @@ main
                     // color: #000000
                     padding: 2px 4px
 
-        #items
+        #armors
             width: 100%
             height: 100%
             position: relative
@@ -61,12 +63,12 @@ main
                 position: absolute
                 top: 0
                 bottom: 0
-                right: -17px
+                right: -18px
                 width: 100%
                 height: 100%
                 overflow-y: scroll
 
-                .item
+                .armor
                     margin: 10px 0
                     padding: 0
                     padding-top: 3px
@@ -80,6 +82,8 @@ main
 
                     .mat-form-field
                         transform: translateY(5px)
+                        max-width: 120px
 
-    .value
-        max-width: 60px
+                    .edit-armor-button
+                        margin: 0 30px
+
