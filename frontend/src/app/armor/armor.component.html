@@ -1,1 +1,20 @@
-<p>armor works!</p>
+<main>
+  <div id="container">
+    <div id="head">
+      <h2 class="title">Armors</h2>
+      <button mat-icon-button (click)="toggleAddItemForm()">
+        <i class="material-icons">add_circle</i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngFor="let armor of Armors">
+    <h3>{{ armor.name }}</h3>
+
+    <div *ngFor="let item of armor.composition">
+      <h4>Part armor : {{ item.type }}</h4>
+      <p>Name : {{ item.name }}</p>
+      <p>Value : {{ item.value }}</p>
+    </div>
+  </div>
+</main>

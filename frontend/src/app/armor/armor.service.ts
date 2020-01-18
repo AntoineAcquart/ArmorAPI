@@ -7,7 +7,7 @@ import { Armor } from "../armor/armor.entity";
 @Injectable({
   providedIn: "root"
 })
-export class Service {
+export class ArmorService {
   constructor(private http: HttpClient) {}
   url: string = "http://localhost:3000/armor/";
   getArmors() {

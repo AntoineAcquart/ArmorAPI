@@ -8,7 +8,10 @@ class ItemController {
     const type = req.headers.itemType;
     //Get items from database
     const itemRepository = getRepository(Item);
-    const items = await itemRepository.find({ where: { type: type } });
+    const items = await itemRepository.find({
+      where: { type: type },
+      order: { name: "ASC" }
+    });
 
     //Send the items object
     res.send(items);
@@ -66,7 +69,7 @@ class ItemController {
     }
 
     //If all ok, send 201 response
-    res.status(201).send("Item created");
+    res.status(201).send(item);
   };
 
   static editItem = async (req: Request, res: Response) => {

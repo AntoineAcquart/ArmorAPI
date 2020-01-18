@@ -8,7 +8,9 @@ class ArmorController {
   static listAll = async (req: Request, res: Response) => {
     //Get armors from database
     const armorRepository = getRepository(Armor);
-    const armors = await armorRepository.find();
+    const armors = await armorRepository.find({
+      order: { name: "ASC" }
+    });
 
     const itemRepository = getRepository(Item);
 
@@ -68,7 +70,7 @@ class ArmorController {
     }
 
     //If all ok, send 201 response
-    res.status(201).send("Armor created");
+    res.status(201).send(armor);
   };
 
   static editArmor = async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { Item } from "../item/item.entity";
 
@@ -22,19 +22,17 @@ export class ItemService {
       .pipe(catchError(this.handleError));
   }
 
-  createArmor(typeItem: string, item: Item) {
-    return this.http
-      .post(this.url + typeItem, item)
-      .pipe(catchError(this.handleError));
+  createItem(typeItem: string, item: Item) {
+    return this.http.post<Item>(this.url + typeItem, item);
   }
 
-  updateArmor(typeItem: string, item: Item, itemName: string) {
+  updateItem(typeItem: string, item: Item, itemName: string) {
     return this.http
       .put(this.url + typeItem + "/" + itemName, item)
       .pipe(catchError(this.handleError));
   }
 
-  deleteArmor(typeItem: string, itemName: string) {
+  deleteItem(typeItem: string, itemName: string) {
     return this.http
       .delete(this.url + typeItem + "/" + itemName)
       .pipe(catchError(this.handleError));

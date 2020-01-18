@@ -1,8 +1,91 @@
 <main>
-  <div id="items">
-    <h2 id="title">{{ type }}</h2>
-    <mat-card *ngFor="let item of items">
-      {{ item.name }}
-    </mat-card>
+  <div id="container">
+    <div id="head">
+      <img [src]="'assets/' + type + '.svg'" />
+      <h2 class="title">{{ type }}</h2>
+      <button
+        mat-icon-button
+        (click)="toggleAddItemForm()"
+        matTooltip="create new"
+      >
+        <i class="material-icons">add_circle</i>
+      </button>
+      <form
+        class="add-item-form"
+        *ngIf="addItemForm"
+        [formGroup]="addItemGroup"
+        (submit)="addItem()"
+      >
+        <mat-form-field>
+          <mat-label>name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="name"
+            formControlName="name"
+          />
+        </mat-form-field>
+        <mat-form-field class="value">
+          <mat-label>value</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="value"
+            formControlName="value"
+          />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          type="submit"
+          [disabled]="addItemGroup.invalid"
+          matTooltip="save"
+        >
+          <i class="material-icons">done</i>
+        </button>
+        <button
+          mat-icon-button
+          (click)="toggleAddItemForm()"
+          matTooltip="cancel"
+        >
+          <i class="material-icons">close</i>
+        </button>
+      </form>
+      <mat-error *ngIf="addItemFormError">{{ addItemFormError }}</mat-error>
+    </div>
+    <div id="items">
+      <div class="scroll">
+        <mat-card class="item" *ngFor="let item of items">
+          <span class="name">{{ item.name }}</span>
+          <div>
+            <mat-form-field class="value">
+              <input
+                matInput
+                type="number"
+                placeholder="value"
+                [formControl]="editItemControl[item.name]"
+              />
+            </mat-form-field>
+            <button
+              mat-icon-button
+              (click)="editItem(item)"
+              [disabled]="
+                editItemControl[item.name].invalid ||
+                editItemControl[item.name].value === item.value
+              "
+              matTooltip="edit"
+            >
+              <i class="material-icons">done</i>
+            </button>
+          </div>
+          <button
+            mat-icon-button
+            (click)="deleteItem(item)"
+            matTooltip="delete"
+          >
+            <i class="material-icons">delete_forever</i>
+          </button>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </main>
