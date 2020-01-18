@@ -116,18 +116,17 @@
       <div class="scroll">
         <mat-card class="armor" *ngFor="let armor of Armors" >
           <span class="name">{{ armor.name }}</span>
-          <div class="armorParts">
+          <div class="armorParts" *ngIf="editArmorGroup[armor.name]">
             <form
             (submit)="editArmor(armor)"
             [formGroup]="editArmorGroup[armor.name]"
-            >                      
+            >                        
               <mat-form-field>
                 <mat-label>Helmet</mat-label>
                 <mat-select formControlName="helmet">
                   <mat-option
                     *ngFor="let helmet of Helmets"
-                    [value]="helmet.name"  
-                    [disabled] = "true"                
+                    [value]="helmet.name" 
                   >
                     {{ helmet.name }}
                   </mat-option>
