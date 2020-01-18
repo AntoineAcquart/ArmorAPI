@@ -81,6 +81,7 @@
             mat-icon-button
             (click)="deleteItem(item)"
             matTooltip="delete"
+            [disabled]="armorItems[item.name]"
           >
             <i class="material-icons">delete_forever</i>
           </button>

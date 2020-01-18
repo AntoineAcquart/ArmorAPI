@@ -22,7 +22,8 @@ export class ArmorService {
   }
 
   createArmor(armor: Armor) {
-    return this.http.post(this.url, armor).pipe(catchError(this.handleError));
+    return this.http.post<Armor>(this.url, armor)
+    .pipe(catchError(this.handleError));
   }
 
   updateArmor(armor: Armor, armorName: string) {

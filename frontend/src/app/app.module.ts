@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from "@angular/material/button";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import {MatSelectModule} from '@angular/material/select'; 
 
 @NgModule({
   declarations: [AppComponent, ArmorComponent, HeaderComponent, ItemComponent],
@@ -29,7 +30,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

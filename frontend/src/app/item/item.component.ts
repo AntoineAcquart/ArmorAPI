@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Item } from "./item.entity";
 import { ItemService } from "./item.service";
+import { ArmorService } from "../armor/armor.service";
 import {
   FormBuilder,
   FormGroup,
@@ -30,9 +31,12 @@ export class ItemComponent implements OnInit {
 
   editItemControl: FormControl[] = [];
 
+  armorItems: Item[] = [];
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly itemService: ItemService,
+    private readonly armorService: ArmorService,
     private readonly fb: FormBuilder
   ) {
     this.type = route.snapshot.data.type;
@@ -46,6 +50,16 @@ export class ItemComponent implements OnInit {
           this.editItemControl[item.name] = new FormControl(item.value, [
             Validators.required
           ]);
+        });
+      }
+    });
+    this.armorService.getArmors().subscribe({
+      next: armors => {
+
+        armors.forEach(armor => {
+          armor.composition.forEach(item => {
+            this.armorItems[item.name] = item;
+          });
         });
       }
     });

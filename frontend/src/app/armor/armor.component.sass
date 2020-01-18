@@ -1,0 +1,85 @@
+main
+    height: calc( 100% - 80px )
+    opacity: 0.8
+    display: flex
+    justify-content: center
+    align-items: center
+
+    #container
+        width: 90%
+        height: 90%
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+
+        #head
+            width: 100%
+            height: 80px
+            display: flex
+            justify-content: flex-start
+            align-items: center
+            flex-direction: row
+
+            > *
+                margin: 0 20px
+
+            .title
+                text-transform: uppercase
+
+            .add-armor-form
+                display: flex
+                justify-content: space-evenly
+                align-items: center
+                flex-direction: row
+                flex-wrap: nowrap
+                > *
+                    margin: 0 15px
+                *
+                    max-width: 80px
+
+                .name
+                    max-width: 200px
+                    *
+                        max-width: 200px
+
+                .mat-form-field
+                    transform: translateY(5px)
+
+                input
+                    // background-color: #ffffff
+                    // color: #000000
+                    padding: 2px 4px
+
+        #items
+            width: 100%
+            height: 100%
+            position: relative
+            overflow: hidden
+
+            .scroll
+                position: absolute
+                top: 0
+                bottom: 0
+                right: -17px
+                width: 100%
+                height: 100%
+                overflow-y: scroll
+
+                .item
+                    margin: 10px 0
+                    padding: 0
+                    padding-top: 3px
+                    display: flex
+                    justify-content: space-evenly
+                    align-items: center
+                    flex-direction: row
+
+                    .name
+                        width: 300px
+
+                    .mat-form-field
+                        transform: translateY(5px)
+
+    .value
+        max-width: 60px
