@@ -11,14 +11,14 @@ class ArmorController {
       order: { name: "ASC" }
     });
 
-    const itemRepository = getRepository(Item);
+    // const itemRepository = getRepository(Item);
 
-    for (let index = 0; index < armors.length; index++) {
-      const items = await itemRepository.find({
-        where: { armor: armors[index] }
-      });
-      armors[index].composition = items;
-    }
+    // for (let index = 0; index < armors.length; index++) {
+    //   const items = await itemRepository.find({
+    //     where: { armor: armors[index] }
+    //   });
+    //   armors[index].composition = items;
+    // }
 
     //Send the armors object
     res.send(armors);
@@ -89,11 +89,16 @@ class ArmorController {
     const armorRepository = getRepository(Armor);
 
     try {
-      await armorRepository.update({ name: name }, armor);
+      //await armorRepository.update({ name: name }, armor);
+      const oldArmor = await armorRepository.findOneOrFail({ name: name });
+      if (oldArmor) {
+        await armorRepository.delete({ name: name });
+        await armorRepository.save(armor);
+      }
     } catch (error) {
       //If not found, send a 404 response
-      
-      res.status(404).send("Armor not found or armor name already in use");
+      console.log("error:", error);
+      res.status(404).send("Armor not found");
       return;
     }
 

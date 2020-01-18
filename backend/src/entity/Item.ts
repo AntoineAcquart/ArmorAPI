@@ -1,4 +1,12 @@
-import { Entity, Column, Unique, PrimaryColumn, ManyToOne } from "typeorm";
+import {
+  Entity,
+  Column,
+  Unique,
+  PrimaryColumn,
+  ManyToOne,
+  JoinTable,
+  ManyToMany
+} from "typeorm";
 import { Armor } from "./Armor";
 
 @Entity()
@@ -13,7 +21,7 @@ export class Item {
   @Column()
   value: string;
 
-  @ManyToOne(
+  @ManyToMany(
     type => Armor,
     armor => armor.composition
   )

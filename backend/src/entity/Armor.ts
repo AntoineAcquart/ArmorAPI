@@ -1,4 +1,4 @@
-import { Entity, Unique, PrimaryColumn, OneToMany } from "typeorm";
+import { Entity, Unique, PrimaryColumn, ManyToMany, JoinTable } from "typeorm";
 import { Item } from "./Item";
 
 @Entity()
@@ -7,9 +7,11 @@ export class Armor {
   @PrimaryColumn()
   name: string;
 
-  @OneToMany(
+  @ManyToMany(
     type => Item,
-    item => item.armor
+    item => item.armor,
+    { cascade: true, eager: true }
   )
+  @JoinTable()
   composition: Item[];
 }

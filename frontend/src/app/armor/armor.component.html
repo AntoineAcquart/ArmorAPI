@@ -29,11 +29,11 @@
         <mat-form-field>
           <!--*ngFor="let part of PartsArmor"  -->
           <mat-label>Helmet</mat-label>
-          <mat-select>
+          <mat-select formControlName="helmet">
             <mat-option
               *ngFor="let helmet of Helmets"
               [value]="helmet.name"
-              formControlName="helmet"
+              
             >
               {{ helmet.name }}
             </mat-option>
@@ -42,11 +42,11 @@
 
         <mat-form-field>
           <mat-label>Arm</mat-label>
-          <mat-select>
+          <mat-select formControlName="arm">
             <mat-option
               *ngFor="let arm of Arms"
               [value]="arm.name"
-              formControlName="arm"
+              
             >
               {{ arm.name }}
             </mat-option>
@@ -55,11 +55,11 @@
 
         <mat-form-field>
           <mat-label>Torso</mat-label>
-          <mat-select>
+          <mat-select formControlName="torso">
             <mat-option
               *ngFor="let torso of Torsos"
               [value]="torso.name"
-              formControlName="torso"
+              
             >
               {{ torso.name }}
             </mat-option>
@@ -68,11 +68,11 @@
 
         <mat-form-field>
           <mat-label>Leg</mat-label>
-          <mat-select>
+          <mat-select formControlName="leg">
             <mat-option
               *ngFor="let leg of Legs"
               [value]="leg.name"
-              formControlName="leg"
+              
             >
               {{ leg.name }}
             </mat-option>
@@ -81,11 +81,11 @@
 
         <mat-form-field>
           <mat-label>Cape</mat-label>
-          <mat-select>
+          <mat-select formControlName="cape">
             <mat-option
               *ngFor="let cape of Capes"
               [value]="cape.name"
-              formControlName="helmet"
+              
             >
               {{ cape.name }}
             </mat-option>
@@ -104,7 +104,6 @@
         <button
           mat-icon-button
           (click)="toggleAddArmorForm()"
-          [disabled]="addArmorGroup.invalid"
           matTooltip="cancel"
         >
           <i class="material-icons">close</i>
@@ -115,90 +114,99 @@
 
     <div id="armors">
       <div class="scroll">
-        <mat-card class="armor" *ngFor="let armor of Armors">
+        <mat-card class="armor" *ngFor="let armor of Armors" >
           <span class="name">{{ armor.name }}</span>
-          <div>
-            <mat-form-field>
-              <mat-label>Helmet</mat-label>
-              <mat-select>
-                <mat-option
-                  *ngFor="let helmet of Helmets"
-                  [value]="helmet"
-                  [formControl]="editArmorControl[armor.name]"
-                >
-                  {{ helmet.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="armorParts">
+            <form
+            (submit)="editArmor(armor)"
+            [formGroup]="editArmorGroup[armor.name]"
+            >                      
+              <mat-form-field>
+                <mat-label>Helmet</mat-label>
+                <mat-select formControlName="helmet">
+                  <mat-option
+                    *ngFor="let helmet of Helmets"
+                    [value]="helmet.name"  
+                    [disabled] = "true"                
+                  >
+                    {{ helmet.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Arm</mat-label>
-              <mat-select>
-                <mat-option
-                  *ngFor="let arm of Arms"
-                  [value]="arm"
-                  [formControl]="editArmorControl[armor.name]"
-                >
-                  {{ arm.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field>
+                <mat-label>Arm</mat-label>
+                <mat-select formControlName="arm">
+                  <mat-option
+                    *ngFor="let arm of Arms"
+                    [value]="arm.name"
+                    
+                  >
+                    {{ arm.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Torso</mat-label>
-              <mat-select>
-                <mat-option
-                  *ngFor="let torso of Torsos"
-                  [value]="torso"
-                  [formControl]="editArmorControl[armor.name]"
-                >
-                  {{ torso.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field>
+                <mat-label>Torso</mat-label>
+                <mat-select formControlName="torso">
+                  <mat-option
+                    *ngFor="let torso of Torsos"
+                    [value]="torso.name"
+                    
+                  >
+                    {{ torso.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Leg</mat-label>
-              <mat-select>
-                <mat-option
-                  *ngFor="let leg of Legs"
-                  [value]="leg"
-                  [formControl]="editArmorControl[armor.name]"
-                >
-                  {{ leg.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field>
+                <mat-label>Leg</mat-label>
+                <mat-select formControlName="leg">
+                  <mat-option
+                    *ngFor="let leg of Legs"
+                    [value]="leg.name"
+                    
+                  >
+                    {{ leg.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Cape</mat-label>
-              <mat-select>
-                <mat-option
-                  *ngFor="let cape of Capes"
-                  [value]="cape"
-                  [formControl]="editArmorControl[armor.name]"
-                >
-                  {{ cape.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <button
-              class="edit-armor-button"
-              mat-icon-button
-              (click)="editArmor(armor)"
-              [disabled]=""
-              matTooltip="edit"
+              <mat-form-field>
+                <mat-label>Cape</mat-label>
+                <mat-select formControlName="cape">
+                  <mat-option
+                    *ngFor="let cape of Capes"
+                    [value]="cape.name"                  
+                  >
+                    {{ cape.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+<!-- CHECKER POUR LE DISABLED DU BOUTON EDIT -->
+              <button
+                class="edit-armor-button"
+                mat-icon-button                
+                [disabled]="editArmorGroup[armor.name].invalid ||
+                (editArmorGroup[armor.name].helmet === armor.composition[0] && 
+                editArmorGroup[armor.name].arm === armor.composition[1] &&
+                editArmorGroup[armor.name].torso === armor.composition[2] &&
+                editArmorGroup[armor.name].leg === armor.composition[3] &&
+                editArmorGroup[armor.name].cape === armor.composition[4])          
+                "
+                matTooltip="edit"
+              ><!--editArmorControl[armor.name].composition == armor.composition-->
+                <i class="material-icons">done</i>
+              </button>
+            </form
             >
-              <i class="material-icons">done</i>
-            </button>
           </div>
 
           <button
             mat-icon-button
             (click)="deleteArmor(armor)"
             matTooltip="delete"
-            [disabled]=""
           >
             <i class="material-icons">delete_forever</i>
           </button>
@@ -206,14 +214,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div *ngFor="let armor of Armors">
-    <h3>{{ armor.name }}</h3>
-
-    <div *ngFor="let item of armor.composition">
-      <h4>Part armor : {{ item.type }}</h4>
-      <p>Name : {{ item.name }}</p>
-      <p>Value : {{ item.value }}</p>
-    </div>
-  </div> -->
 </main>

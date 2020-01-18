@@ -22,8 +22,14 @@ export class ArmorComponent implements OnInit {
   Torsos: Item[] = [];
   Legs: Item[] = [];
   Capes: Item[] = [];
-
+  ItemsNames : string[] = [];
+  
   CompositionArmor: Item[] = [];
+  UpdateCompositionArmor: Item[] = [];
+  
+  partToAdd: Item;
+  partToUpdate: Item;
+
   addArmorGroup = new FormGroup({
     name: new FormControl("", [
       Validators.required,
@@ -37,8 +43,8 @@ export class ArmorComponent implements OnInit {
   });
   addArmorForm = false;
   addArmorFormError: string;
-
-  editArmorControl: FormControl[] = [];
+ 
+  editArmorGroup : FormGroup[] = [];
 
   constructor(
     private armorService: ArmorService,
@@ -49,9 +55,16 @@ export class ArmorComponent implements OnInit {
     this.armorService.getArmors().subscribe({
       next: response => {
         this.Armors = response;
-        this.Armors.forEach(armor => {});
+        this.Armors.forEach(armor => {
+          this.editArmorGroup[armor.name] = new FormGroup({
+            helmet: new FormControl(armor.composition[0].name, [Validators.required]),
+            arm: new FormControl(armor.composition[1].name, [Validators.required]),
+            torso: new FormControl(armor.composition[2].name, [Validators.required]),
+            leg: new FormControl(armor.composition[3].name, [Validators.required]),
+            cape: new FormControl(armor.composition[4].name, [Validators.required])
+          });
+        });
       },
-
       error: err => console.error("error : ", err)
     });
 
@@ -94,23 +107,21 @@ export class ArmorComponent implements OnInit {
     });
   }
 
-  partToAdd: Item;
   addArmor() {
     delete this.addArmorFormError;
     if (this.addArmorGroup.invalid) {
       return;
     }
     this.PartsArmor.forEach(part => {
-      //pas eu le temps de terminer
-      // switch(part){
-      //   case 'helmet': { this.partToAdd = this.Helmets.find<Item>(item => this.addArmorGroup.get(part).value);break;}
-      //   case 'arm': {this.Arms = ;break;}
-      //   case 'torso':{ this.Torsos = ; break;}
-      //   case 'leg': {this.Legs = ;break;}
-      //   case 'cape': {this.Capes = ;break;}
-      // }
-      this.CompositionArmor.push();
-    });
+      switch(part){
+        case 'helmet': { this.partToAdd = this.Helmets.find(item => item.name = this.addArmorGroup.get(part).value);break;}
+        case 'arm': {this.partToAdd = this.Arms.find(item => item.name = this.addArmorGroup.get(part).value);break;}
+        case 'torso':{ this.partToAdd = this.Torsos.find(item => item.name = this.addArmorGroup.get(part).value); break;}
+        case 'leg': {this.partToAdd = this.Legs.find(item => item.name = this.addArmorGroup.get(part).value) ;break;}
+        case 'cape': {this.partToAdd = this.Capes.find(item => item.name = this.addArmorGroup.get(part).value);break;}
+      }
+      this.CompositionArmor.push(this.partToAdd);
+    }); 
 
     const armor: Armor = {
       name: this.addArmorGroup.get("name").value,
@@ -118,11 +129,15 @@ export class ArmorComponent implements OnInit {
     };
 
     this.armorService.createArmor(armor).subscribe({
-      next: response => {
-        this.Armors.push(response);
-        // this.editItemControl[response.name] = new FormControl(response.value, [
-        //   Validators.required
-        // ]);
+      next: newArmor => {
+        this.Armors.push(newArmor);
+        this.editArmorGroup[newArmor.name] = new FormGroup({
+          helmet: new FormControl(newArmor.composition[0].name, [Validators.required]),
+          arm: new FormControl(newArmor.composition[1].name, [Validators.required]),
+          torso: new FormControl(newArmor.composition[2].name, [Validators.required]),
+          leg: new FormControl(newArmor.composition[3].name, [Validators.required]),
+          cape: new FormControl(newArmor.composition[4].name, [Validators.required])
+        });
         this.toggleAddArmorForm();
       },
       error: err => {
@@ -130,5 +145,58 @@ export class ArmorComponent implements OnInit {
         console.log("error:", err);
       }
     });
+  }
+
+  
+  // editArmor(armor: Armor) {
+  //   if (this.editArmorGroup[armor.name].invalid) {
+  //     return;
+  //   }
+
+  //   this.PartsArmor.forEach(part => {
+  //     switch(part){
+  //       case 'helmet': { this.partToUpdate = this.Helmets.find(item => item.name = this.editArmorGroup[armor.name].get(part).value);break;}
+  //       case 'arm': {this.partToUpdate = this.Arms.find(item => item.name = this.editArmorGroup[armor.name].get(part).value);break;}
+  //       case 'torso':{ this.partToUpdate = this.Torsos.find(item => item.name = this.editArmorGroup[armor.name].get(part).value); break;}
+  //       case 'leg': {this.partToUpdate = this.Legs.find(item => item.name = this.editArmorGroup[armor.name].get(part).value) ;break;}
+  //       case 'cape': {this.partToUpdate = this.Capes.find(item => item.name = this.editArmorGroup[armor.name].get(part).value);break;}
+  //     }
+  //     this.UpdateCompositionArmor.push(this.partToUpdate);
+  //   }); 
+  //   const editedArmor = {
+  //     ...armor,
+  //     composition: this.UpdateCompositionArmor
+  //   };
+  //   this.armorService.updateArmor(editedArmor, armor.name).subscribe({
+  //     next: () => {
+  //       armor.composition = editedArmor.composition;
+  //     },
+  //     error: err => {
+  //       console.log("error:", err);
+  //     }
+  //   });
+  // }
+
+  deleteArmor(armor:Armor) {
+    this.armorService.deleteArmor(armor.name).subscribe({
+      next: () => {
+        this.Armors.splice(
+          this.Armors.findIndex(_armor => _armor.name === armor.name),
+          1
+        );
+        delete this.editArmorGroup[armor.name];
+      },
+      error: err => {
+        console.log("error:", err);
+      }
+    });
+  }
+
+  isDisabled(itemName : string){
+    this.Armors.forEach(armor => {
+    armor.composition.forEach(item => {
+    this.ItemsNames.push(item.name)
+  });
+});
   }
 }
