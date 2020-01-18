@@ -3,7 +3,7 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "root",
+  "password": "formation13",
   "database": "armors",
   "synchronize": true,
   "logging": false,

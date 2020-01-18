@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-
 import { Armor } from "../entity/Armor";
 import { Item } from "../entity/Item";
 
@@ -93,11 +92,12 @@ class ArmorController {
       await armorRepository.update({ name: name }, armor);
     } catch (error) {
       //If not found, send a 404 response
+      
       res.status(404).send("Armor not found or armor name already in use");
       return;
     }
 
-    //After all send a 204 (no content, but accepted) response
+     //After all send a 204 (no content, but accepted) response
     res.status(204).send();
   };
 
