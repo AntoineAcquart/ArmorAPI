@@ -1,4 +1,4 @@
-<main>
+<main [style.cursor]="isLoading ? 'wait' : 'auto'">
   <div id="container">
     <div id="head">
       <img [src]="'assets/armor.svg'" />
@@ -27,11 +27,10 @@
         </mat-form-field>
 
         <mat-form-field>
-          <!--*ngFor="let part of PartsArmor"  -->
           <mat-label>Helmet</mat-label>
           <mat-select formControlName="helmet">
             <mat-option
-              *ngFor="let helmet of Helmets"
+              *ngFor="let helmet of helmets"
               [value]="helmet.name"
               
             >
@@ -44,7 +43,7 @@
           <mat-label>Arm</mat-label>
           <mat-select formControlName="arm">
             <mat-option
-              *ngFor="let arm of Arms"
+              *ngFor="let arm of arms"
               [value]="arm.name"
               
             >
@@ -57,7 +56,7 @@
           <mat-label>Torso</mat-label>
           <mat-select formControlName="torso">
             <mat-option
-              *ngFor="let torso of Torsos"
+              *ngFor="let torso of torsos"
               [value]="torso.name"
               
             >
@@ -70,7 +69,7 @@
           <mat-label>Leg</mat-label>
           <mat-select formControlName="leg">
             <mat-option
-              *ngFor="let leg of Legs"
+              *ngFor="let leg of legs"
               [value]="leg.name"
               
             >
@@ -83,7 +82,7 @@
           <mat-label>Cape</mat-label>
           <mat-select formControlName="cape">
             <mat-option
-              *ngFor="let cape of Capes"
+              *ngFor="let cape of capes"
               [value]="cape.name"
               
             >
@@ -114,18 +113,18 @@
 
     <div id="armors">
       <div class="scroll">
-        <mat-card class="armor" *ngFor="let armor of Armors" >
+        <mat-card class="armor" *ngFor="let armor of armors" >
           <span class="name">{{ armor.name }}</span>
           <div class="armorParts" *ngIf="editArmorGroup[armor.name]">
             <form
-            (submit)="editArmor(armor)"
+            (submit)="editArmor(armor.name)"
             [formGroup]="editArmorGroup[armor.name]"
             >                        
               <mat-form-field>
                 <mat-label>Helmet</mat-label>
                 <mat-select formControlName="helmet">
                   <mat-option
-                    *ngFor="let helmet of Helmets"
+                    *ngFor="let helmet of helmets"
                     [value]="helmet.name" 
                   >
                     {{ helmet.name }}
@@ -137,7 +136,7 @@
                 <mat-label>Arm</mat-label>
                 <mat-select formControlName="arm">
                   <mat-option
-                    *ngFor="let arm of Arms"
+                    *ngFor="let arm of arms"
                     [value]="arm.name"
                     
                   >
@@ -150,7 +149,7 @@
                 <mat-label>Torso</mat-label>
                 <mat-select formControlName="torso">
                   <mat-option
-                    *ngFor="let torso of Torsos"
+                    *ngFor="let torso of torsos"
                     [value]="torso.name"
                     
                   >
@@ -163,7 +162,7 @@
                 <mat-label>Leg</mat-label>
                 <mat-select formControlName="leg">
                   <mat-option
-                    *ngFor="let leg of Legs"
+                    *ngFor="let leg of legs"
                     [value]="leg.name"
                     
                   >
@@ -176,26 +175,19 @@
                 <mat-label>Cape</mat-label>
                 <mat-select formControlName="cape">
                   <mat-option
-                    *ngFor="let cape of Capes"
+                    *ngFor="let cape of capes"
                     [value]="cape.name"                  
                   >
                     {{ cape.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-<!-- CHECKER POUR LE DISABLED DU BOUTON EDIT -->
               <button
                 class="edit-armor-button"
-                mat-icon-button                
-                [disabled]="editArmorGroup[armor.name].invalid ||
-                (editArmorGroup[armor.name].helmet === armor.composition[0] && 
-                editArmorGroup[armor.name].arm === armor.composition[1] &&
-                editArmorGroup[armor.name].torso === armor.composition[2] &&
-                editArmorGroup[armor.name].leg === armor.composition[3] &&
-                editArmorGroup[armor.name].cape === armor.composition[4])          
-                "
+                mat-icon-button
+                [disabled]="!isEdited(armor)"
                 matTooltip="edit"
-              ><!--editArmorControl[armor.name].composition == armor.composition-->
+              >
                 <i class="material-icons">done</i>
               </button>
             </form

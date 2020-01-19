@@ -4,7 +4,6 @@ import { Item } from "./item.entity";
 import { ItemService } from "./item.service";
 import { ArmorService } from "../armor/armor.service";
 import {
-  FormBuilder,
   FormGroup,
   Validators,
   FormControl
@@ -37,23 +36,22 @@ export class ItemComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly itemService: ItemService,
     private readonly armorService: ArmorService,
-    private readonly fb: FormBuilder
   ) {
     this.type = route.snapshot.data.type;
   }
 
   ngOnInit() {
-    this.itemService.getItems(this.type).subscribe({
+    this.itemService.getItems(this.type).subscribe({//get all items depending on the type of item (helmet, arms, torso...)
       next: items => {
-        this.items = items;
+        this.items = items;//init array of items
         items.forEach(item => {
-          this.editItemControl[item.name] = new FormControl(item.value, [
+          this.editItemControl[item.name] = new FormControl(item.value, [//creation of formControl to each item to handle modification
             Validators.required
           ]);
         });
       }
     });
-    this.armorService.getArmors().subscribe({
+    this.armorService.getArmors().subscribe({//get all the armors to check afterwards if an item belongs to an armor 
       next: armors => {
 
         armors.forEach(armor => {
@@ -65,7 +63,7 @@ export class ItemComponent implements OnInit {
     });
   }
 
-  toggleAddItemForm() {
+  toggleAddItemForm() {//display or not the form create item
     this.addItemForm = !this.addItemForm;
     delete this.addItemFormError;
     this.addItemGroup.get("name").reset();
@@ -79,19 +77,19 @@ export class ItemComponent implements OnInit {
     }
     const item: Item = {
       type: this.type,
-      name: this.addItemGroup.get("name").value,
+      name: this.addItemGroup.get("name").value,//get value from input in creation form
       value: this.addItemGroup.get("value").value
     };
 
-    this.itemService.createItem(this.type, item).subscribe({
+    this.itemService.createItem(this.type, item).subscribe({//send to back the new item
       next: response => {
-        this.items.push(response);
-        this.editItemControl[response.name] = new FormControl(response.value, [
+        this.items.push(response);//add new item to the item array
+        this.editItemControl[response.name] = new FormControl(response.value, [//and create a new formcontrol for edition
           Validators.required
         ]);
-        this.toggleAddItemForm();
+        this.toggleAddItemForm();//remove creation form
       },
-      error: err => {
+      error: err => {//error handling
         this.addItemFormError = `Name is already in use.`;
         console.log("error:", err);
       }
@@ -103,31 +101,31 @@ export class ItemComponent implements OnInit {
       return;
     }
 
-    const editedItem = {
+    const editedItem = {//init modified item
       ...item,
-      value: this.editItemControl[item.name].value
+      value: this.editItemControl[item.name].value//get value from input in edit form
     };
 
-    this.itemService.updateItem(this.type, editedItem, item.name).subscribe({
+    this.itemService.updateItem(this.type, editedItem, item.name).subscribe({//send updated item to back
       next: () => {
         item.value = editedItem.value;
       },
-      error: err => {
+      error: err => {//error handling
         console.log("error:", err);
       }
     });
   }
 
   deleteItem(item: Item) {
-    this.itemService.deleteItem(this.type, item.name).subscribe({
+    this.itemService.deleteItem(this.type, item.name).subscribe({//send deleted item to back
       next: () => {
-        this.items.splice(
+        this.items.splice(//remove item from the item array
           this.items.findIndex(_item => _item.name === item.name),
           1
         );
         delete this.editItemControl[item.name];
       },
-      error: err => {
+      error: err => {//error handling
         console.log("error:", err);
       }
     });
